@@ -7,34 +7,39 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
+
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Assignment1 {
 	WebDriver driver;
 	
-	@BeforeSuite
+	@BeforeMethod
 	public void setup()
 	{
 		WebDriverManager.chromedriver().setup(); 		
         driver = new ChromeDriver();
         System.out.println("Before Suite");
-	}
-	
-	@Test
-	public void First() throws InterruptedException
-	{
-		        
         driver.get("http://automationpractice.com/index.php");
 		System.out.println("Browser Launched");
 		driver.manage().window().maximize();
+	}
+	
+	@Test
+	public void Register() throws InterruptedException
+	{
+		        
+
 		Assert.assertEquals(driver.getTitle(), "My Store");
 		driver.findElement(By.xpath("//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a")).click();
 		Assert.assertEquals(driver.getTitle(), "Login - My Store");
@@ -73,14 +78,63 @@ public class Assignment1 {
 		driver.findElement(By.xpath("//*[@id=\"submitAccount\"]/span")).click();
 		Assert.assertEquals("Welcome to your account. Here you can manage all of your personal information and orders.", driver.findElement(By.xpath("//*[@id=\"center_column\"]/p")).getText());
 		System.out.println("account created");
-		//String expectedUserName="FirstNAme"+"LastNAme";
-		//Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a/span")).getText(), expectedUserName);
+		String expectedUserName="FirstName"+" LastName";
+		Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a/span")).getText(), expectedUserName);
 		System.out.println("First Name captured");
 		Assert.assertEquals(driver.getTitle(), "My account - My Store");
 		Thread.sleep(3000);
+		System.out.println("registration successfull");
 	}
 	
-	@AfterSuite
+	@Test 
+	public void Login()
+	{
+		Assert.assertEquals(driver.getTitle(), "My Store");
+		driver.findElement(By.xpath("//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a")).click();
+		Assert.assertEquals(driver.getTitle(), "Login - My Store");
+		driver.findElement(By.xpath("//*[@id=\"email\"]")).sendKeys("Admin1@gmail.com");
+		driver.findElement(By.name("passwd")).sendKeys("Test123");
+		driver.findElement(By.xpath("//*[@id=\"SubmitLogin\"]/span")).click();
+		
+		WebDriverWait wait=new WebDriverWait(driver,20);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a/span")));
+		String FullName=driver.findElement(By.xpath("//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a/span")).getText();
+		Assert.assertEquals(FullName,"FirstName LastName" );
+		System.out.println("Login successfull");
+		
+	}
+	
+	@Test
+	public void Purchase() throws InterruptedException
+	{
+		Assert.assertEquals(driver.getTitle(), "My Store");
+		driver.findElement(By.xpath("//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a")).click();
+		Assert.assertEquals(driver.getTitle(), "Login - My Store");
+		driver.findElement(By.xpath("//*[@id=\"email\"]")).sendKeys("Admin1@gmail.com");
+		driver.findElement(By.name("passwd")).sendKeys("Test123");
+		driver.findElement(By.xpath("//*[@id=\"SubmitLogin\"]/span")).click();
+		
+		WebDriverWait wait=new WebDriverWait(driver,20);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a/span")));
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//*[@id=\"block_top_menu\"]/ul/li[3]/a")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//*[@id=\"center_column\"]/ul/li/div/div[2]/div[2]/a[1]/span")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//*[@id=\"layer_cart\"]/div[1]/div[2]/div[4]/a/span")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//*[@id=\"center_column\"]/p[2]/a[1]/span")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//*[@id=\"center_column\"]/form/p/button/span")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//*[@id=\"cgv\"]")).click();driver.findElement(By.xpath("//*[@id=\"cgv\"]")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//*[@id=\"form\"]/p/button/span")).click();
+		driver.findElement(By.xpath("//*[@id=\"cgv\"]")).click();
+		
+	}
+	
+	@AfterMethod
 	public void AfterEnd()
 	{
 		driver.quit();
