@@ -60,7 +60,7 @@
 			<configuration>
                    <!-- TestNG Suite XML files list for test execution -->
                    <suiteXmlFiles>
-                       <suiteXmlFile>com.first/testng.xml</suiteXmlFile>
+                       <suiteXmlFile>testng.xml</suiteXmlFile>
                        
                    </suiteXmlFiles>
                </configuration>
