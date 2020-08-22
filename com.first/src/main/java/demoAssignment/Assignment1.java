@@ -1,5 +1,8 @@
 package demoAssignment;
 
+import java.util.Random;
+import java.util.stream.IntStream;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,7 +42,13 @@ public class Assignment1 {
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"email_create\"]")));
 		
 		WebElement Email= driver.findElement(By.xpath("//*[@id=\"email_create\"]"));
-		Email.sendKeys("Admin3@gmail.com");
+		String email;
+		Random rand = new Random();
+		int randNO=rand.nextInt(999999999);
+		System.out.println("Number generated is "+randNO);
+		
+		email="Admin"+randNO+"@Gmail.com";
+		Email.sendKeys(email);
 		driver.findElement(By.xpath("//*[@id=\"SubmitCreate\"]/span")).click();
 		Assert.assertEquals(driver.getTitle(), "Login - My Store");
 		Thread.sleep(5000);
@@ -59,6 +68,7 @@ public class Assignment1 {
 		Country.selectByVisibleText("United States");
 		driver.findElement(By.name("phone")).sendKeys("65326532");
 		driver.findElement(By.id("phone_mobile")).sendKeys("65326532");
+		driver.findElement(By.name("alias")).clear();
 		driver.findElement(By.name("alias")).sendKeys("CorpUSer01");
 		driver.findElement(By.xpath("//*[@id=\"submitAccount\"]/span")).click();
 		Assert.assertEquals("Welcome to your account. Here you can manage all of your personal information and orders.", driver.findElement(By.xpath("//*[@id=\"center_column\"]/p")).getText());
@@ -67,6 +77,7 @@ public class Assignment1 {
 		//Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a/span")).getText(), expectedUserName);
 		System.out.println("First Name captured");
 		Assert.assertEquals(driver.getTitle(), "My account - My Store");
+		Thread.sleep(3000);
 	}
 	
 	@AfterSuite
