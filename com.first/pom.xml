@@ -60,7 +60,7 @@
 			<configuration>
                    <!-- TestNG Suite XML files list for test execution -->
                    <suiteXmlFiles>
-                       <suiteXmlFile>C:/Users/Yogesh/eclipse-workspace/com.first/testng.xml</suiteXmlFile>
+                       <suiteXmlFile>com.first/testng.xml</suiteXmlFile>
                        
                    </suiteXmlFiles>
                </configuration>
